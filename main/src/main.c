@@ -3,9 +3,11 @@
 #include "device/backlight.h"
 #include "device/buzzer.h"
 #include "device/rgb.h"
-#include "device/st7735s.h"
+#include "display.h"
 #include "esp_log.h"
 #include "esp_system.h"
+#include "lvgl.h"
+#include "tasks.h"
 
 void
 app_main()
@@ -18,8 +20,14 @@ app_main()
 	rgb_init();
 	rgb_set(0x0000FF);
 
-	st7735s_init();
-	st7735s_fill(0, ST7735S_WIDTH - 1, 0, ST7735S_HEIGHT - 1, RGB565(0xFFFFFF));
+	lv_init();
+	display_init();
+
+	assert(pdPASS == xTaskCreatePinnedToCore(
+						 task_lv, "task_lv", TASK_LV_STACK_SIZE, NULL, TASK_LV_PRIO, NULL, 0));
+	vTaskDelay(200 / portTICK_PERIOD_MS);
+	assert(pdPASS == xTaskCreatePinnedToCore(
+						 task_ui, "task_ui", TASK_UI_STACK_SIZE, NULL, TASK_UI_PRIO, NULL, 0));
 
 	ESP_LOGI(TAG, "SYSTEM READY");
 }
