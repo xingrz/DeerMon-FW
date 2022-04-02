@@ -52,6 +52,13 @@
 #define REG_GMCTRP1 0xE0
 #define REG_GMCTRN1 0xE1
 
+#define MADCTL_MY 1  // Row Address Order
+#define MADCTL_MX 1  // Column Address Order
+#define MADCTL_MV 0  // Row/Column Exchange
+#define MADCTL_ML 0  // Vertical Refresh Order (0 = Top to Buttom; 1 = Buttom to Top)
+#define MADCTL_RGB 1  // RGB-BGR Order (0 = RGB; 1 = BGR)
+#define MADCTL_MH 0  // Horizontal Refresh Order (0 = Left to Right; 1 = Right to Left)
+
 #define TRANS_CMD (void *)0
 #define TRANS_DATA (void *)1
 
@@ -73,7 +80,9 @@ static struct {
 	{REG_PWCTR5, 2, {0x8D, 0xEE}},
 	{REG_VMCTR1, 1, {0x0A}},
 	{REG_INVOFF, 0, {}},
-	{REG_MADCTL, 1, {0x00}},
+	{REG_MADCTL, 1,
+		{(MADCTL_MY << 7) | (MADCTL_MX << 6) | (MADCTL_MV << 5) | (MADCTL_ML << 4) |
+			(MADCTL_RGB << 3) | (MADCTL_MH << 2)}},
 	{REG_COLMOD, 1, {0x05}},
 	{REG_GMCTRP1, 16,
 		{0x12, 0x1C, 0x10, 0x18, 0x33, 0x2C, 0x25, 0x28, 0x28, 0x27, 0x2F, 0x3C, 0x00, 0x03, 0x03,
