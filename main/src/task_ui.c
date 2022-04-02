@@ -5,22 +5,27 @@
 #include "lvgl.h"
 #include "tasks.h"
 
+#define ANIMATION 0
+
 void
 task_ui(void *arg)
 {
+#if ANIMATION
 	int v1 = 0, v2 = 0, v3 = 0;
 	int d1 = 1, d2 = 2, d3 = 3;
+#endif
 
 	static lv_color_t needle_colors[3];
-	needle_colors[0] = LV_COLOR_BLUE;
-	needle_colors[1] = LV_COLOR_ORANGE;
-	needle_colors[2] = LV_COLOR_PURPLE;
+	needle_colors[0] = LV_COLOR_RED;
+	needle_colors[1] = LV_COLOR_GREEN;
+	needle_colors[2] = LV_COLOR_BLUE;
 
 	lv_obj_t *gauge1 = lv_gauge_create(lv_scr_act(), NULL);
 	lv_gauge_set_needle_count(gauge1, 3, needle_colors);
 	lv_obj_set_pos(gauge1, 10, 10);
 	lv_obj_set_size(gauge1, 108, 108);
 
+#if ANIMATION
 	while (1) {
 		lv_gauge_set_value(gauge1, 0, v1);
 		lv_gauge_set_value(gauge1, 1, v2);
@@ -35,6 +40,11 @@ task_ui(void *arg)
 
 		vTaskDelay(10 / portTICK_PERIOD_MS);
 	}
+#else
+	lv_gauge_set_value(gauge1, 0, 0);
+	lv_gauge_set_value(gauge1, 1, 20);
+	lv_gauge_set_value(gauge1, 2, 40);
+#endif  // ANIMATION
 
 	vTaskDelete(NULL);
 }
