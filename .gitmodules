@@ -1,0 +1,3 @@
+[submodule "modules/aw9364"]
+	path = modules/aw9364
+	url = https://github.com/xingrz/zephyr-aw9364.git
