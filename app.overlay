@@ -1,5 +1,6 @@
 #include <dt-bindings/spi/spi.h>
 #include <dt-bindings/led/led.h>
+#include <dt-bindings/pwm/pwm.h>
 
 / {
 	aliases {
@@ -11,6 +12,17 @@
 		compatible = "awinic,aw9364";
 		output-gpios = <&gpio0 19 GPIO_PULL_UP>;
 	};
+
+	pwmleds {
+		compatible = "pwm-leds";
+		buzzer: buzzer {
+			pwms = <&ledc0 22 1000 PWM_POLARITY_NORMAL>;
+		};
+	};
+};
+
+&ledc0 {
+	status = "okay";
 };
 
 &spi3 {
