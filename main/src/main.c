@@ -29,5 +29,8 @@ app_main()
 	assert(pdPASS == xTaskCreatePinnedToCore(
 						 task_ui, "task_ui", TASK_UI_STACK_SIZE, NULL, TASK_UI_PRIO, NULL, 0));
 
+	assert(pdPASS == xTaskCreatePinnedToCore(task_beep, "task_beep", TASK_BEEP_STACK_SIZE, NULL,
+						 TASK_BEEP_PRIO, NULL, 0));
+
 	ESP_LOGI(TAG, "SYSTEM READY");
 }
